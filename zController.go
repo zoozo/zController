@@ -40,6 +40,10 @@ func (c ZController) GetSessions() *sessions.CookieStore {
 func (c ZController) GetVar(key string) interface{} {
 	return GCustomVars[key]
 }
+func (c ZController) JavaScript(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	http.ServeFile(w, r, "js/"+vars["name"])
+}
 
 //}}}
 
