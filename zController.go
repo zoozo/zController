@@ -44,6 +44,9 @@ func (c ZController) JavaScript(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	http.ServeFile(w, r, "js/"+vars["name"])
 }
+func (c ZController) Vars(r *http.Request) map[string]string { //{{{
+	return mux.Vars(r)
+} //}}}
 
 //}}}
 
