@@ -1,6 +1,9 @@
 package zctr
 
-import "regexp"
+import (
+	"html"
+	"regexp"
+)
 
 func IsNumber(data string) bool {
 	if m, _ := regexp.MatchString("^[0-9]+$", data); m {
@@ -31,4 +34,7 @@ func FilterAlphabet(data string) string {
 func FilterWord(data string) string {
 	re := regexp.MustCompile("[^a-zA-Z0-9_]")
 	return re.ReplaceAllString(data, "")
+}
+func FilterHtml(data string) string {
+	return html.EscapeString(data)
 }

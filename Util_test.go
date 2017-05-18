@@ -1,6 +1,8 @@
 package zctr
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestIsNumber(t *testing.T) { //{{{
 	if !IsNumber("a1A") {
@@ -57,5 +59,12 @@ func TestFilterWord(t *testing.T) { //{{{
 		t.Log("Filter Word Testing OK")
 	} else {
 		t.Error("Filter Word Testing fail!!")
+	}
+}                                   //}}}
+func TestFilterHtml(t *testing.T) { //{{{
+	if FilterHtml("<#!abc_ 3S") == "&lt;#!abc_ 3S" {
+		t.Log("Filter Html Testing OK")
+	} else {
+		t.Error("Filter Html Testing fail!!")
 	}
 } //}}}
