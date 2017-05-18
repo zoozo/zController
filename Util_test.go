@@ -4,37 +4,58 @@ import "testing"
 
 func TestIsNumber(t *testing.T) { //{{{
 	if !IsNumber("a1A") {
-		t.Log("number Testing OK")
+		t.Log("is number Testing OK")
 	} else {
-		t.Error("number Testing fail!!")
+		t.Error("is number Testing fail!!")
 	}
 	if IsNumber("123") {
-		t.Log("number Testing OK")
+		t.Log("is number Testing OK")
 	} else {
-		t.Error("number Testing fail!!")
+		t.Error("is number Testing fail!!")
 	}
 }                                   //}}}
 func TestIsAlphabet(t *testing.T) { //{{{
 	if !IsAlphabet("a1A") {
-		t.Log("Alphabet Testing OK")
+		t.Log("is Alphabet Testing OK")
 	} else {
-		t.Error("Alphabet Testing fail!!")
+		t.Error("is Alphabet Testing fail!!")
 	}
 	if IsAlphabet("AabC") {
-		t.Log("Alphabet Testing OK")
+		t.Log("is Alphabet Testing OK")
 	} else {
-		t.Error("Alphabet Testing fail!!")
+		t.Error("is Alphabet Testing fail!!")
 	}
 }                               //}}}
 func TestIsWord(t *testing.T) { //{{{
 	if !IsWord("#%^") {
-		t.Log("number Testing OK")
+		t.Log("is Word Testing OK")
 	} else {
-		t.Error("number Testing fail!!")
+		t.Error("is Word Testing fail!!")
 	}
 	if IsWord("abc_3s") {
-		t.Log("number Testing OK")
+		t.Log("is Word Testing OK")
 	} else {
-		t.Error("number Testing fail!!")
+		t.Error("is Word Testing fail!!")
+	}
+}                                     //}}}
+func TestFilterNumber(t *testing.T) { //{{{
+	if FilterNumber("a1b2c3#%") == "123" {
+		t.Log("filter number Testing OK")
+	} else {
+		t.Error("filter number Testing fail!!")
+	}
+}                                       //}}}
+func TestFilterAlphabet(t *testing.T) { //{{{
+	if FilterAlphabet("0A3a1bC%#_") == "AabC" {
+		t.Log("filter Alphabet Testing OK")
+	} else {
+		t.Error("filter Alphabet Testing fail!!")
+	}
+}                                   //}}}
+func TestFilterWord(t *testing.T) { //{{{
+	if FilterWord("<#!abc_3S") == "abc_3S" {
+		t.Log("Filter Word Testing OK")
+	} else {
+		t.Error("Filter Word Testing fail!!")
 	}
 } //}}}
