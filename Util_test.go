@@ -62,9 +62,16 @@ func TestFilterWord(t *testing.T) { //{{{
 	}
 }                                   //}}}
 func TestFilterHtml(t *testing.T) { //{{{
-	if FilterHtml("<#!abc_ 3S") == "&lt;#!abc_ 3S" {
+	if FilterHtml("<#!abc_ 3S") == "#!abc_ 3S" {
 		t.Log("Filter Html Testing OK")
 	} else {
 		t.Error("Filter Html Testing fail!!")
+	}
+}                                   //}}}
+func TestHtmlEscape(t *testing.T) { //{{{
+	if HtmlEscape("<#!abc_ 3S") == "&lt;#!abc_ 3S" {
+		t.Log("Html Escape Testing OK")
+	} else {
+		t.Error("Html Escape Testing fail!!")
 	}
 } //}}}

@@ -36,5 +36,9 @@ func FilterWord(data string) string {
 	return re.ReplaceAllString(data, "")
 }
 func FilterHtml(data string) string {
+	re := regexp.MustCompile(`[<>'"&]`)
+	return re.ReplaceAllString(data, "")
+}
+func HtmlEscape(data string) string {
 	return html.EscapeString(data)
 }
