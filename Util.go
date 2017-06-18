@@ -1,6 +1,8 @@
 package zctr
 
 import (
+	"crypto/sha256"
+	"fmt"
 	"html"
 	"regexp"
 )
@@ -41,4 +43,8 @@ func FilterHtml(data string) string {
 }
 func HtmlEscape(data string) string {
 	return html.EscapeString(data)
+}
+func Sha256(data string) string {
+	return fmt.Sprintf("%x", sha256.Sum256([]byte(data)))
+
 }
