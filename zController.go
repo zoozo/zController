@@ -19,9 +19,11 @@ var GSessions = sessions.NewCookieStore(securecookie.GenerateRandomKey(16))
 var GCustomVars map[string]interface{}
 
 type HTTPSystemConf struct {
-	Port   string
-	Access string
-	Error  string
+	Port    string
+	Access  string
+	Error   string
+	TLSCert string
+	TLSKey  string
 }
 type HTTPConf struct {
 	System HTTPSystemConf
@@ -101,7 +103,12 @@ func (r ZRouter) Run() { //{{{
 	}
 	loggedRouter := handlers.CombinedLoggingHandler(r.alog, r.router)
 	log.Println("init port:" + r.port)
-	err := http.ListenAndServe(":"+r.port, context.ClearHandler(loggedRouter))
+	var err error
+	if r.sys_conf.TLSCert != "" && r.sys_conf.TLSKey != "" {
+		err = http.ListenAndServeTLS(":"+r.port, r.sys_conf.TLSCert, r.sys_conf.TLSKey, context.ClearHandler(loggedRouter))
+	} else {
+		err = http.ListenAndServe(":"+r.port, context.ClearHandler(loggedRouter))
+	}
 
 	if err != nil {
 		log.Println("ListenAndServe: ", err)
