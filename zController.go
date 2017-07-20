@@ -43,12 +43,21 @@ func (c ZController) GetVar(key string) interface{} {
 	return GCustomVars[key]
 }
 func (c ZController) GetIntVar(key string) int {
+	if GCustomVars[key] == nil {
+		return 0
+	}
 	return int(GCustomVars[key].(float64))
 }
 func (c ZController) GetFloat64Var(key string) float64 {
+	if GCustomVars[key] == nil {
+		return 0
+	}
 	return GCustomVars[key].(float64)
 }
 func (c ZController) GetStringVar(key string) string {
+	if GCustomVars[key] == nil {
+		return ""
+	}
 	return GCustomVars[key].(string)
 }
 func (c ZController) JavaScript(w http.ResponseWriter, r *http.Request) {
