@@ -4,8 +4,23 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"html"
+	"reflect"
 	"regexp"
 )
+
+func InSlice(value interface{}, slice interface{}) bool {
+	s := reflect.ValueOf(slice)
+	if s.Kind() != reflect.Slice {
+		return false
+	}
+
+	for i := 0; i < s.Len(); i++ {
+		if value == s.Index(i).Interface() {
+			return true
+		}
+	}
+	return false
+}
 
 func IsNumber(data string) bool {
 	if m, _ := regexp.MatchString("^[0-9]+$", data); m {
