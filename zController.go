@@ -42,6 +42,12 @@ func (c ZController) GetSessions() *sessions.CookieStore {
 func (c ZController) GetVar(key string) interface{} {
 	return GCustomVars[key]
 }
+func (c ZController) GetBoolVar(key string) bool {
+	if GCustomVars[key] == nil {
+		return false
+	}
+	return GCustomVars[key].(bool)
+}
 func (c ZController) GetIntVar(key string) int {
 	if GCustomVars[key] == nil {
 		return 0
@@ -67,8 +73,6 @@ func (c ZController) JavaScript(w http.ResponseWriter, r *http.Request) {
 func (c ZController) Vars(r *http.Request) map[string]string { //{{{
 	return mux.Vars(r)
 } //}}}
-
-//}}}
 
 type ZRouter struct { //{{{
 	alog     io.Writer
