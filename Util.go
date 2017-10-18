@@ -52,6 +52,10 @@ func FilterWord(data string) string {
 	re := regexp.MustCompile("[^a-zA-Z0-9_]")
 	return re.ReplaceAllString(data, "")
 }
+func FilterSQL(data string) string {
+	re := regexp.MustCompile("[^a-zA-Z0-9_+-/*//()]")
+	return re.ReplaceAllString(data, "")
+}
 func FilterHtml(data string) string {
 	re := regexp.MustCompile(`[<>'"&]`)
 	return re.ReplaceAllString(data, "")
