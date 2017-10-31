@@ -48,6 +48,12 @@ func (c ZController) GetBoolVar(key string) bool {
 	}
 	return GCustomVars[key].(bool)
 }
+func (c ZController) GetInt64Var(key string) int64 {
+	if GCustomVars[key] == nil {
+		return 0
+	}
+	return int64(GCustomVars[key].(float64))
+}
 func (c ZController) GetIntVar(key string) int {
 	if GCustomVars[key] == nil {
 		return 0
