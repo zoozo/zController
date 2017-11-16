@@ -2,6 +2,7 @@ package zctr
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/context"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -19,11 +20,12 @@ var GSessions = sessions.NewCookieStore(securecookie.GenerateRandomKey(16))
 var GCustomVars map[string]interface{}
 
 type HTTPSystemConf struct {
-	Port    string
-	Access  string
-	Error   string
-	TLSCert string
-	TLSKey  string
+	Port         string
+	Access       string
+	Error        string
+	TLSCert      string
+	TLSKey       string
+	NotFoundPage string
 }
 type HTTPConf struct {
 	System HTTPSystemConf
@@ -124,12 +126,21 @@ func (r *ZRouter) defaultSetting() { //{{{
 }                                                                                      //}}}
 func (r ZRouter) HandleFunc(path string, f func(http.ResponseWriter, *http.Request)) { //{{{
 	r.router.HandleFunc(path, f)
+}                                                                            //}}}
+func (r ZRouter) NotFoundHandler(w http.ResponseWriter, req *http.Request) { //{{{
+	w.WriteHeader(http.StatusNotFound)
+	if r.sys_conf.NotFoundPage != "" {
+		http.ServeFile(w, req, r.sys_conf.NotFoundPage)
+	} else {
+		fmt.Fprintf(w, "404 Page Not Found")
+	}
 }                        //}}}
 func (r ZRouter) Run() { //{{{
 	if r.alog == nil {
 		r.alog = os.Stdout
 	}
 	loggedRouter := handlers.CombinedLoggingHandler(r.alog, r.router)
+	r.router.NotFoundHandler = http.HandlerFunc(r.NotFoundHandler)
 	log.Println("init port:" + r.port)
 	var err error
 	if r.sys_conf.TLSCert != "" && r.sys_conf.TLSKey != "" {
