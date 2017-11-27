@@ -88,7 +88,7 @@ type ZRouter struct { //{{{
 	router   *mux.Router
 	port     string
 	sys_conf HTTPSystemConf
-}                                       //}}}
+} //}}}
 func NewZRouter(conf string) *ZRouter { //{{{
 	conf_content, err := ioutil.ReadFile(conf)
 	if err != nil {
@@ -104,7 +104,7 @@ func NewZRouter(conf string) *ZRouter { //{{{
 	r.defaultSetting()
 	r.router = mux.NewRouter()
 	return r
-}                                    //}}}                                                                                      //}}}
+} //}}}                                                                                      //}}}
 func (r *ZRouter) defaultSetting() { //{{{
 	if r.sys_conf.Port == "" {
 		r.port = "80"
@@ -123,10 +123,10 @@ func (r *ZRouter) defaultSetting() { //{{{
 	}
 	GLogger = log.New(r.elog, "Logger:", log.Ldate|log.Ltime|log.Lshortfile)
 
-}                                                                                      //}}}
+} //}}}
 func (r ZRouter) HandleFunc(path string, f func(http.ResponseWriter, *http.Request)) { //{{{
 	r.router.HandleFunc(path, f)
-}                                                                            //}}}
+} //}}}
 func (r ZRouter) NotFoundHandler(w http.ResponseWriter, req *http.Request) { //{{{
 	w.WriteHeader(http.StatusNotFound)
 	if r.sys_conf.NotFoundPage != "" {
@@ -134,12 +134,13 @@ func (r ZRouter) NotFoundHandler(w http.ResponseWriter, req *http.Request) { //{
 	} else {
 		fmt.Fprintf(w, "404 Page Not Found")
 	}
-}                        //}}}
+} //}}}
 func (r ZRouter) Run() { //{{{
 	if r.alog == nil {
 		r.alog = os.Stdout
 	}
-	loggedRouter := handlers.CombinedLoggingHandler(r.alog, r.router)
+	loggedRouter := handlers.ProxyHeaders(r.router)
+	loggedRouter = handlers.CombinedLoggingHandler(r.alog, loggedRouter)
 	r.router.NotFoundHandler = http.HandlerFunc(r.NotFoundHandler)
 	log.Println("init port:" + r.port)
 	var err error
