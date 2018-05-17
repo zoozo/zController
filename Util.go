@@ -44,6 +44,10 @@ func FilterNumber(data string) string {
 	re := regexp.MustCompile("[^0-9]")
 	return re.ReplaceAllString(data, "")
 }
+func FilterNumber2(data string) string {
+	re := regexp.MustCompile("[^0-9.]")
+	return re.ReplaceAllString(data, "")
+}
 func FilterAlphabet(data string) string {
 	re := regexp.MustCompile("[^a-zA-Z]")
 	return re.ReplaceAllString(data, "")
