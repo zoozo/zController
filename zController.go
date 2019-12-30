@@ -1,6 +1,7 @@
 package zctr
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/context"
@@ -145,7 +146,16 @@ func (r ZRouter) Run() { //{{{
 	log.Println("init port:" + r.port)
 	var err error
 	if r.sys_conf.TLSCert != "" && r.sys_conf.TLSKey != "" {
-		err = http.ListenAndServeTLS(":"+r.port, r.sys_conf.TLSCert, r.sys_conf.TLSKey, context.ClearHandler(loggedRouter))
+		cfg := &tls.Config{
+			MinVersion: tls.VersionTLS12,
+		}
+		srv := &http.Server{
+			Addr:      ":" + r.port,
+			Handler:   context.ClearHandler(loggedRouter),
+			TLSConfig: cfg,
+		}
+		srv.ListenAndServeTLS(r.sys_conf.TLSCert, r.sys_conf.TLSKey)
+		//err = srv.ListenAndServeTLS(":"+r.port, r.sys_conf.TLSCert, r.sys_conf.TLSKey, context.ClearHandler(loggedRouter))
 	} else {
 		err = http.ListenAndServe(":"+r.port, context.ClearHandler(loggedRouter))
 	}
