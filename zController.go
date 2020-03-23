@@ -147,10 +147,19 @@ func (r ZRouter) Run() { //{{{
 	var err error
 	if r.sys_conf.TLSCert != "" && r.sys_conf.TLSKey != "" {
 		cfg := &tls.Config{
-			MinVersion: tls.VersionTLS12,
+			MinVersion:               tls.VersionTLS12,
+			PreferServerCipherSuites: false,
+			CipherSuites: []uint16{
+				tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+				tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+				tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+				tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
+				tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
+			},
 		}
 		srv := &http.Server{
-			Addr:      ":" + r.port,
+			Addr:      ":443",
 			Handler:   context.ClearHandler(loggedRouter),
 			TLSConfig: cfg,
 		}
