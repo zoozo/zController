@@ -159,11 +159,11 @@ func (r ZRouter) Run() { //{{{
 			},
 		}
 		srv := &http.Server{
-			Addr:      ":443",
+			Addr:      ":" + r.port,
 			Handler:   context.ClearHandler(loggedRouter),
 			TLSConfig: cfg,
 		}
-		srv.ListenAndServeTLS(r.sys_conf.TLSCert, r.sys_conf.TLSKey)
+		err = srv.ListenAndServeTLS(r.sys_conf.TLSCert, r.sys_conf.TLSKey)
 		//err = srv.ListenAndServeTLS(":"+r.port, r.sys_conf.TLSCert, r.sys_conf.TLSKey, context.ClearHandler(loggedRouter))
 	} else {
 		err = http.ListenAndServe(":"+r.port, context.ClearHandler(loggedRouter))
